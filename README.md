@@ -9,6 +9,8 @@ JAX-RS test
    * https://www.ibm.com/developerworks/jp/webservices/library/ws-restful/
  * RESTアーキテクチャを最初に提唱したFielding博士の論文
    * http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+ * RESTのRepresentation State Transferが表す意味を解説する
+   * http://www.slideshare.net/abhaymilestogo/representational-state-transfer-rest?next_slideshow=1 
  * WebSphereのJAX-RSでファイルアップロードを実装するには
    * https://www.ibm.com/developerworks/community/blogs/Dougclectica/entry/JAX_RS_in_WebSphere_to_upload_files?lang=ja
    * http://www.programcreek.com/java-api-examples/index.php?api=org.apache.wink.common.model.multipart.InPart
