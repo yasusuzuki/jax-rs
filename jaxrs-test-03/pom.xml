@@ -18,14 +18,6 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.wink</groupId>
-			<artifactId>wink-common</artifactId>
-			<version>1.4</version>
-			<scope>compile</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>com.ibm.websphere.appserver.api</groupId>
 			<artifactId>
@@ -35,6 +27,8 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>

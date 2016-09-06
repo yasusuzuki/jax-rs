@@ -1,0 +1,64 @@
+<html>
+<body>
+
+<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js '></script>
+
+<h1>REST APIに対してファイルアップロードする２つの方法</h1>
+<div style="border:1px solid black;">
+<h2>FORMタグで括らない場合</h2>
+AJAXを使って、FORMを送信する。AJAXを使ってFORMを送信するので、ページ遷移はしない。<br>
+純粋なRESTの考え方に沿うと、ファイルをアップロードし、サーバ側の状態を変えたので、次の状態を表すRESPONSEが<br>
+サーバからクライアントに返却されるべきかもしれない<br>
+  <input name="myFile" class="form-control" type="file" /><br>
+  <input type="button" value="アップロード! jquery"    onclick="uploadAttachement( $(this).parent().get() )" />JQuery版 <br>
+  <input type="button" value="アップロード! wojquery"  onclick="uploadAttachement(this.parentNode)"        />ノーマルJavaScript版 <br>
+</div>
+<br>
+<div style="border:1px solid black;">
+<h2>FORMタグを括る場合</h2>
+AJAXを使わなくてよい分単純だが、FORMを送信すると、送信したURLに遷移してしまう。REST APIが遷移先のHTMLを返却するのも変なので、
+この方法は実用的ではない気がする。
+<form method="POST" action="http://localhost:9080/jaxrs-test-03/api/gas/upload" enctype="multipart/form-data">
+  <input name="myFile" type="file" /><br>
+  <input type="submit" value="アップロード!" /> <br>
+</form>
+</div>
+
+
+  <input type="button" value="load"  onclick="loadA()"        />ノーマルJavaScript版 <br>
+
+<script>
+function loadA(){
+    $.get("http://localhost:9080/jaxrs-test-03/api/gas/loadMySpreadSheet",
+           {input: "aa"},
+           function(d){
+               window.alert("aa");
+               console.log(d);
+               }
+               );
+
+}
+
+function uploadAttachement(){
+  var fd = new FormData();
+  if ($("input[name='myFile']").val()!== '') {
+    fd.append( "file", $("input[name='myFile']").prop("files")[0] );
+  }
+  var postData = {
+    type : "POST",
+    dataType : "text",
+    data : fd,
+    processData : false,
+    contentType : false
+  };
+  $.ajax(
+    "http://localhost:9080/jaxrs-test-03/api/gas/upload", postData
+  ).done(function( text ){
+    console.log(text);
+  });
+} 
+</script>
+
+</body>
+</html>
+

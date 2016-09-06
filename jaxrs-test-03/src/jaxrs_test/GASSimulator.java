@@ -3,11 +3,9 @@ package jaxrs_test;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -22,9 +20,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import org.apache.wink.common.model.multipart.BufferedInMultiPart;
-import org.apache.wink.common.model.multipart.InPart;
 
 import com.ibm.websphere.jaxrs20.multipart.IAttachment;
 import com.ibm.websphere.jaxrs20.multipart.IMultipartBody;
@@ -52,89 +47,24 @@ public class GASSimulator {
     @Produces(MediaType.APPLICATION_JSON)
     public Response loadMySpreadSheet() {
     	System.out.println(LocalDateTime.now() + "loadMySpreadSheet is called ");
-
-
     	return Response.ok(task.getTask()).build();
     }
     
     @POST
     @Path("/updateMySpreadSheet")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON) 
     public Response updateMySpreadSheet(@FormParam("input") String input) {
     	task.getTask().addComment(input);
     	System.out.println(LocalDateTime.now() + " updateMySpreadSheet is called " + input);
         return Response.ok().build();
     }
     
-    @POST
-    @Path("/processFileUpload")     
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response processFileUpload(@Context ServletContext context, BufferedInMultiPart bimp) throws Exception {
-    	String filename = "dummy";
-		try {
-			for (InPart part : bimp.getParts()) {
-				MultivaluedMap<String, String> headers = part.getHeaders();
-				List<String> list = headers.get("Content-Disposition");
-				for (String value : list) {
-					System.out.println("Key : " + value);
-					String[] tokenlist = value.split(";\\s*");
-					for(String token : tokenlist ) {
-						System.out.println("next " + token );
-						if ( token.startsWith("filename=")){
-							int beginIndex = token.indexOf("\"");
-							int endIndex = token.lastIndexOf("\"");
-							filename = token.substring(beginIndex+1, endIndex);
-							break;
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		InPart inPart = bimp.getParts().get(0);
-		InputStream ins = inPart.getInputStream();
-    	
-		String filePath = context.getRealPath("/")+ "\\" + filename;
-		try (FileOutputStream out = new FileOutputStream(filePath); ){
-			int read=0;
-			byte[] bytes = new byte[1024];
-			while((read = ins.read(bytes))!= -1){
-				out.write(bytes, 0, read);
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			throw new Exception(e);
-		}
-				
-		System.out.println(LocalDateTime.now() + " processFileUpload is called " + filePath );
-        return Response.ok().build();    
-    }
-    
     
 
     /**
-     * function uploadAttachement(){
-     *   var fd = new FormData();
-     *   if ($("input[name='myFile']").val()!== '') {
-     *     fd.append( "file", $("input[name='myFile']").prop("files")[0] );
-     *   }
-     *   var postData = {
-     *     type : "POST",
-     *     dataType : "text",
-     *     data : fd,
-     *     processData : false,
-     *     contentType : false
-     *   };
-     *   $.ajax(
-     *     "http://localhost:9080/jaxrs-test-03/api/gas/upload", postData
-     *   ).done(function( text ){
-     *     console.log(text);
-     *   });
-     * }
+     * 
+     * FORMを使ってクライアントがファイルアップロードしたときに、そのファイルをサーバアプリのルートフォルダに
+     * 保存する機能。クライアント実装はclient/test_fileupload.htmlを参照。
      * 
      * @param bodies
      * @param ctx
@@ -174,6 +104,8 @@ public class GASSimulator {
     		InputStream ins = attach.getDataHandler().getInputStream();
             BufferedInputStream br = new BufferedInputStream(ins);
             String ls = File.separator;
+            
+            
             //ファイル名は送信元と同じ。出力先フォルダはデプロイしたアプリのルート
             File ofile = new File(ctx.getRealPath("/") + ls + fileName);
             System.out.println("Writing file to : " + ofile.getAbsolutePath());
