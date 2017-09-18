@@ -24,3 +24,8 @@ JAX-RS test
    * https://www.ibm.com/support/knowledgecenter/ja/SSAW57_8.5.5/com.ibm.websphere.nd.doc/ae/twbs_jaxrs_multipart_formdata_from_html.html
  * JAX-RSのリソースクラスのライフサイクル
    * https://www.ibm.com/support/knowledgecenter/ja/SSAW57_8.5.5/com.ibm.websphere.wlp.doc/ae/rwlp_jaxrs2.0_ejbcdi.html
+ * JCP - メーリングリスト
+   * https://java.net/projects/jax-rs-spec/lists/jsr370-experts/archive
+   * https://java.net/projects/jax-rs-spec/lists/users/archive
+ * JCP - Spec Leadのblog
+   * https://blogs.oracle.com/PavelBucek/entry/jax_rs_2_1_reactive
